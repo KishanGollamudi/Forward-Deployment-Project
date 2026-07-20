@@ -76,3 +76,4 @@ cypress/screenshots/
 .env.openai
 
 
+.github/
