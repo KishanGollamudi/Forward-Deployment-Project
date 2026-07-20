@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.
+  ~ SPDX-License-Identifier: MIT
+  -->
+
+<div class="ai-widget">
+
+  <div class="ai-panel" [class.open]="isOpen" role="dialog" aria-label="AI Assistant">
+    <div class="ai-header">
+      <mat-icon>smart_toy</mat-icon>
+      <span>AI Assistant</span>
+      <button mat-icon-button (click)="toggle()" aria-label="Close assistant">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="ai-messages" #messageList>
+      @for (msg of messages; track $index) {
+        <div class="message" [class.user]="msg.role === 'user'" [class.assistant]="msg.role === 'assistant'">
+          {{ msg.text }}
+        </div>
+      }
+      @if (loading) {
+        <div class="message assistant loading">
+          <mat-spinner diameter="18"></mat-spinner>
+        </div>
+      }
+    </div>
+
+    <div class="ai-input-row">
+      <mat-form-field appearance="outline" class="ai-input-field">
+        <input matInput [(ngModel)]="input" (keydown)="onKeydown($event)"
+               placeholder="Ask about products or pricing…" [disabled]="loading" />
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="send()" [disabled]="!input.trim() || loading" aria-label="Send">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <button mat-fab color="primary" class="ai-fab" (click)="toggle()" aria-label="Open AI Assistant">
+    <mat-icon>{{ isOpen ? 'close' : 'smart_toy' }}</mat-icon>
+  </button>
+
+</div>

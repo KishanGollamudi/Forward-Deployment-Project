@@ -1,0 +1,43 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ingest:
+    build: .
+    command: python ingest.py
+    env_file:
+      - ../.env.openai
+    environment:
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+      CONFIG_PATH: /config/default.yml
+    volumes:
+      - ../config:/config:ro
+    depends_on:
+      chromadb:
+        condition: service_healthy
+
+  assistant:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env.openai
+    environment:
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+    depends_on:
+      ingest:
+        condition: service_completed_successfully
+
+volumes:
+  chroma_data:

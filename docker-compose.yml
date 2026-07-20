@@ -1,0 +1,58 @@
+services:
+
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - chroma_data:/chroma/chroma
+
+  ingest:
+    build: ./ai_assistant
+    command: python ingest.py
+    env_file:
+      - .env.openai
+    environment:
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+      CONFIG_PATH: /config/default.yml
+    volumes:
+      - ./config:/config:ro
+    depends_on:
+      - chromadb
+
+  assistant:
+    build: ./ai_assistant
+    env_file:
+      - .env.openai
+    environment:
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+    depends_on:
+      - chromadb
+      - ingest
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  juiceshop:
+    image: bkimminich/juice-shop:latest
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./widget.js:/etc/nginx/widget.js:ro
+    depends_on:
+      juiceshop:
+        condition: service_started
+      assistant:
+        condition: service_healthy
+
+volumes:
+  chroma_data:

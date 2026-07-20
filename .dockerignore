@@ -1,20 +1,37 @@
-.git/
-monitoring/
+# Dependencies
 node_modules/
-screenshots/
-test/
-build/reports/
-dist/
-vagrant/
-logs/
-Dockerfile
-.npmrc
-/bom.json
-/bom.xml
-.nyc_output
-coverage
-
-# Pattern is *not covered* by node_modules/ above no matter what IntelliJ says!
 frontend/node_modules/
+
+# Build artifacts
+build/
 frontend/dist/
+.angular/
 frontend/.angular/
+
+# Test files
+test/
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# Docker
+docker-compose*.yml
+ai_assistant/
+
+# Git
+.git/
+.github/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Misc
+screenshots/
+*.sqlite

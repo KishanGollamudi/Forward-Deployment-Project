@@ -1,0 +1,125 @@
+/*!
+ * Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * SPDX-License-Identifier: MIT
+ */
+
+@use '../../styles/variables' as *;
+
+.ai-widget {
+  position: fixed;
+  bottom: $space-xl;
+  right: $space-xl;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $space-s;
+}
+
+.ai-fab {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ai-panel {
+  width: 340px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background: #1e1e2e;
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+
+  &.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  padding: $space-xs $space-s;
+  background: #3f51b5;
+  color: white;
+
+  span {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  mat-icon:first-child {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+.ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: $space-s;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+  min-height: 280px;
+  max-height: 320px;
+}
+
+.message {
+  max-width: 85%;
+  padding: $space-xs $space-s;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  word-break: break-word;
+
+  &.user {
+    align-self: flex-end;
+    background: #3f51b5;
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  &.assistant {
+    align-self: flex-start;
+    background: #2e2e42;
+    color: #e0e0e0;
+    border-bottom-left-radius: 4px;
+  }
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    padding: $space-xs;
+    background: transparent;
+  }
+}
+
+.ai-input-row {
+  display: flex;
+  align-items: center;
+  padding: 0 $space-xs $space-xs;
+  gap: $space-2xs;
+  background: #1e1e2e;
+
+  .ai-input-field {
+    flex: 1;
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    ::ng-deep input {
+      color: #e0e0e0;
+      font-size: 0.875rem;
+    }
+  }
+}
