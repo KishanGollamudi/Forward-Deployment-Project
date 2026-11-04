@@ -18,8 +18,8 @@ application:
   chatBot:
     name: 'Juicy the Smart Assistant'
     avatar: 'JuicyChatBot.png'
-    model: 'gemma4:e4b'
-    llmApiUrl: 'http://localhost:11434/v1'
+    model: 'Qwen/Qwen2.5-1.5B-Instruct'
+    llmApiUrl: 'https://atop-remarry-richly.ngrok-free.dev/v1'
     llmMaxRetries: 2
     sampleQuestions:
       - 'CHATBOT_PROMPT_RECOMMENDATION_SUMMER_PARTY'
