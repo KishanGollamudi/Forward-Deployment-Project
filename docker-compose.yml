@@ -23,6 +23,8 @@ services:
     build: ./ai_assistant
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     environment:
       CHROMA_HOST: chromadb
       CHROMA_PORT: 8000
