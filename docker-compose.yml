@@ -9,7 +9,7 @@ services:
     build: ./ai_assistant
     command: python ingest.py
     env_file:
-      - .env.openai
+      - .env
     environment:
       CHROMA_HOST: chromadb
       CHROMA_PORT: 8000
@@ -22,10 +22,13 @@ services:
   assistant:
     build: ./ai_assistant
     env_file:
-      - .env.openai
+      - .env
     environment:
       CHROMA_HOST: chromadb
       CHROMA_PORT: 8000
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-dummy-token}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
     depends_on:
       - chromadb
       - ingest
